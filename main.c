@@ -177,6 +177,7 @@ void showList(List *list) {
     }
 
     Element *current = list->first;
+
     printf("{ ");
     while (current != NULL){
         printf("(%d) -> ", current->data);
