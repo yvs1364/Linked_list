@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "d:/Dev/C/Chained_list",
-      "program": "d:/Dev/C/Chained_list/build/Debug/outDebug",
+      "cwd": "d:/Dev/C/Linked_list",
+      "program": "d:/Dev/C/Linked_list/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

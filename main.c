@@ -11,7 +11,7 @@ typedef struct List List;
 })                                      \
 
 struct Element{
-    int numb;
+    int data;
     Element *next;
 };
 
@@ -22,12 +22,13 @@ struct List{
 
 List *init();
 int sizeOfList(List *list);
-void insert(List *list, int newNumb);
-void InsertInList(List *list, int newNumb);
+void insert(List *list, int newdata);
+void InsertInList(List *list);
 void deleteFirst(List *list);
 void deleteInList(List *list);
 void destroyList(List *list);
 void showList(List *list);
+void replaceInList(List *list);
 
 
 int main() {
@@ -39,7 +40,11 @@ int main() {
         showList(myList);
     }
     printf("------------------------------------\n");
-    InsertInList(myList,17);
+    replaceInList(myList);
+    showList(myList);
+    printf("Il y a %i d'element dans la list\n", sizeOfList(myList));
+    printf("------------------------------------\n");
+    InsertInList(myList);
     showList(myList);
     printf("Il y a %i d'element dans la list\n", sizeOfList(myList));
     printf("------------------------------------\n");
@@ -58,41 +63,64 @@ List *init() {
     Element *element = malloc(sizeof(*element));
 
    PRESENT(list,element);
-    element->numb = 0;          // Initialise le premier élement à 0;
+    element->data = 0;          // Initialise le premier élement à 0;
     element->next = NULL;       // Met le prochain élement à NULL pour annoncer la fin
     list->first   = element;    // Met l'element initialisé en premier position de la liste
 
     return list;
 }
 
-void insert(List *list, int newNumb) {
+void insert(List *list, int newdata) {
     Element *new = malloc(sizeof(*new));
     PRESENT(list,new);
-    new->numb = newNumb;        // Pointe le nouvel Element vers son futur successeur
+    new->data = newdata;        // Pointe le nouvel Element vers son futur successeur
     new->next = list->first;    // Fait pointer le prochain Element vers le first Element
     list->first = new;          // Fait pointer le point first vers le nouvel Element
 
 }
 
-void InsertInList(List *list, int newNumb) {
-    Element *new = malloc(sizeof(*new));
-    Element *temp;
-    int position, i=0;
+void InsertInList(List *list) {
+    Element *temp = list->first, *new = malloc(sizeof(*new));
+    int newdata, position, i=0;
     PRESENT(list,new);
+
+    printf("Quel valeur voulez-vous rajouter : ");
+    scanf("%d", &newdata);
 
     printf("Entre la position de l'element a ajouter : ");
     scanf("%d", &position);
 
+     while(temp != NULL) {          // Itere sur temp
+        if(i == position-1){        // jusqu'a que i == position-1
+            new->data = newdata;    // Stock la nouvel data dans la nouvelle struct element
+            new->next = temp->next; // L'element suivant de la nouvelle struct devient le prochain element qui a été temporise
+            temp->next = new;       // L'element suivant temporise devient le nouvelle element
+        }
+        temp = temp->next;
+        ++i;
+    }
+}
+
+void replaceInList(List *list) {
+    Element *new = list->first, *temp;
+    int newdata, position, i=0;
+    PRESENT(list,new);
+
+    printf("Quel valeur voulez-vous rajouter : ");
+    scanf("%d", &newdata);
+
+    printf("Entre la position de l'element a remplacer : ");
+    scanf("%d", &position);
+
      while(new != NULL) {
         if(i == position-1){
-            temp = new->next; // Temporise le prochain element de la list dans temp
-            new->numb = newNumb;
-            new->next = temp;
+            temp = new->next;       // Temporise le next element de la list dans la var temp
+            new->next= temp->next;    // Pointe le nouvel Element vers son futur successeur
+            new->data = newdata;
         }
         new = new->next;
         i++;
     }
-
 }
 
 void deleteFirst(List *list) {
@@ -149,11 +177,13 @@ void showList(List *list) {
     }
 
     Element *current = list->first;
+
+    printf("{ ");
     while (current != NULL){
-        printf("%d -> ", current->numb);
+        printf("(%d) -> ", current->data);
         current = current->next;
     }
-    printf("NULL \n");
+    printf("NULL }\n");
 
 }
 
